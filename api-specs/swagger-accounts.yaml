@@ -1,0 +1,344 @@
+swagger: "2.0"
+info:
+  description: Accounts
+  version: v2
+  title: Accounts [automation]
+tags:
+  - name: Accounts
+    description: API to manage accounts
+servers:
+  - url: https://api-solutions.sensedia.com/sandbox/account-service/v2
+    description: Sandbox environment
+paths:
+  /accounts:
+    post:
+      tags:
+        - Accounts
+      description: Creates a new account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountRequest'
+        description: Account request
+      responses:
+        '201':
+          description: Created.
+          content:
+            json:
+              schema:
+                $ref: '#/components/schemas/AccountResponse'
+        '400':
+          description: Required field missing
+          content:
+            json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BadRequestException'
+        '401':
+          description: Authentication error
+        '403':
+          description: Authorization error
+        '404':
+          description: Resource not found
+        '422':
+          description: Business error
+          content:
+            json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityException'
+        '500':
+          description: Internal server error
+        '503':
+          description: Unavailable server
+    get:
+      tags:
+        - Accounts
+      description: Displays all accounts
+      responses:
+        '200':
+          description: OK
+          content:
+            json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GetAccountsByIdResponse'
+        '401':
+          description: Authentication error
+        '403':
+          description: Authorization error
+        '404':
+          description: Resource not found
+        '422':
+          description: Business error
+          content:
+            json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityException'
+        '500':
+          description: Internal server error
+        '503':
+          description: Unavailable server
+  /accounts/{accountId}:
+    get:
+      tags:
+        - Accounts
+      description: Displays an account by its id
+      parameters:
+        - name: accountId
+          in: path
+          description: The account id
+          required: true
+          schema:
+            type: number
+      responses:
+        '200':
+          description: OK
+          content:
+            json:
+              schema:
+                $ref: '#/components/schemas/GetAccountsByIdResponse'
+        '401':
+          description: Authentication error
+        '403':
+          description: Authorization error
+        '404':
+          description: Resource not found
+        '422':
+          description: Business error
+          content:
+            json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityException'
+        '500':
+          description: Internal server error
+        '503':
+          description: Unavailable server
+  /accounts/{accountId}/statements:
+    get:
+      tags:
+        - Accounts
+      description: Displays statements of a given account
+      parameters:
+        - name: accountId
+          in: path
+          description: The account id
+          required: true
+          schema:
+            type: number
+      responses:
+        '200':
+          description: Created.
+          content:
+            json:
+              schema:
+                $ref: '#/components/schemas/StatementResponse'
+        '401':
+          description: Authentication error
+        '403':
+          description: Authorization error
+        '404':
+          description: Resource not found
+        '422':
+          description: Business error
+          content:
+            json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityException'
+        '500':
+          description: Internal server error
+        '503':
+          description: Unavailable server
+  /accounts/balances:
+    post:
+      tags:
+        - Accounts
+      description: Changes an account balance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangeBalance'
+        description: Change Balance Request
+      responses:
+        '201':
+          description: Created.
+          content:
+            json:
+              schema:
+                $ref: '#/components/schemas/ChangeBalanceResponse'
+        '400':
+          description: Required field missing
+          content:
+            json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BadRequestException'
+        '401':
+          description: Authentication error
+        '403':
+          description: Authorization error
+        '404':
+          description: Resource not found
+        '422':
+          description: Business error
+          content:
+            json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityException'
+        '500':
+          description: Internal server error
+        '503':
+          description: Unavailable server
+components:
+  schemas:
+    ChangeBalanceResponse:
+      type: object
+      properties:
+        accountId:
+          type: number
+          example: 668350309665777400
+        balance:
+          type: number
+          example: 1000
+    ChangeBalance:
+      type: object
+      properties:
+        accountId:
+          type: number
+          example: 668350309665777400
+        amount:
+          type: number
+        type:
+          type: string
+          example: C
+    StatementResponse:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 751265252449747000
+        customerId:
+          type: number
+          example: 751265234412765200
+        customerName:
+          type: string
+          example: Sensedia SA
+        customerEmail:
+          type: string
+          example: sensedia@sensedia.com
+        balance:
+          type: number
+          example: 0
+        active:
+          type: boolean
+          example: true
+        allowOverdraft:
+          type: boolean
+          example: true
+        payments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Payment'
+    AccountRequest:
+      type: object
+      properties:
+        customerId:
+          type: number
+          example: 751265234412765200
+        allowOverdraft:
+          type: boolean
+          example: true
+    AccountResponse:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 751265252449747000
+        customerId:
+          type: number
+          example: 751265234412765200
+        customerName:
+          type: string
+          example: Sensedia SA
+        customerEmail:
+          type: string
+          example: sensedia@sensedia.com
+        balance:
+          type: number
+          example: 0
+        active:
+          type: boolean
+          example: true
+        allowOverdraft:
+          type: boolean
+          example: true
+    GetAccountsByIdResponse:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 751265252449747000
+        customerId:
+          type: number
+          example: 751265234412765200
+        customerName:
+          type: string
+          example: Sensedia SA
+        customerEmail:
+          type: string
+          example: sensedia@sensedia.com
+        balance:
+          type: number
+          example: 0
+        active:
+          type: boolean
+          example: true
+        allowOverdraft:
+          type: boolean
+          example: true
+    Payment:
+      type: object
+      properties:
+        id:
+          type: number
+        type:
+          type: string
+          example: C
+        amount:
+          type: number
+          example: 100
+        channel:
+          type: string
+          example: Internet banking
+        description:
+          type: string
+          example: Rent test
+        destination:
+          type: string
+          example: Land test
+    BadRequestException:
+      properties:
+        code:
+          type: string
+          example: '400.001'
+          description: Error code
+        message:
+          type: string
+          example: The field {FIELD} is required.
+          description: Error message
+    UnprocessableEntityException:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Error message
+        detail:
+          type: string
+          description: Error detail
