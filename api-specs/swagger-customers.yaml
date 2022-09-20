@@ -1,227 +1,47 @@
-openapi: 3.0.0
-info:
-  description: Customers
-  version: v2
-  title: Customers [automation]
-tags:
-  - name: Customers
-    description: API to manage Customers
-servers:
-  - url: https://api-solutions.sensedia.com/sandbox/customer-service/v2
-    description: Sandbox environment
-paths:
-  /customers:
-    post:
-      tags:
-        - Customers
-      description: Creates a new customer
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CustomerRequest'
-        description: Customer request
-      responses:
-        '201':
-          description: Created.
-          content:
-            json:
-              schema:
-                $ref: '#/components/schemas/CustomerResponse'
-        '400':
-          description: Required field missing
-          content:
-            json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/BadRequestException'
-        '401':
-          description: Authentication error
-        '403':
-          description: Authorization error
-        '404':
-          description: Resource not found
-        '422':
-          description: Business error
-          content:
-            json:
-              schema:
-                $ref: '#/components/schemas/UnprocessableEntityException'
-        '500':
-          description: Internal server error
-        '503':
-          description: Unavailable server
-    get:
-      tags:
-        - Customers
-      description: Displays all customers
-      responses:
-        '200':
-          description: OK
-          content:
-            json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/CustomerResponse'
-        '401':
-          description: Authentication error
-        '403':
-          description: Authorization error
-        '404':
-          description: Resource not found
-        '422':
-          description: Business error
-          content:
-            json:
-              schema:
-                $ref: '#/components/schemas/UnprocessableEntityException'
-        '500':
-          description: Internal server error
-        '503':
-          description: Unavailable server
-  /customers/{customerId}:
-    get:
-      tags:
-        - Customers
-      description: Displays a customer by its id
-      parameters:
-        - name: customerId
-          in: path
-          description: The customer id
+  swagger: "2.0"
+  info: 
+    description: "API to manage customers from a banking perspective"
+    version: "1"
+    title: "[Sensedia Bank] Customer Service API"
+  host: "api-solutions.sensedia.com"
+  basePath: "/sandbox/customer-service/v1"
+  schemes: 
+    - "https"
+  paths: 
+    /customers/{customerId}: 
+      get: 
+        summary: "Displays a customer by its id"
+        description: "Displays a customer by its id"
+        parameters: []
+        responses: 
+          200: 
+            description: "OK"
+      put: 
+        summary: "Updates a customer"
+        description: "Updates a customer"
+        parameters: []
+        responses: 
+          200: 
+            description: "OK"
+      parameters: 
+        - 
+          name: "customerId"
+          in: "path"
+          description: "customerId"
           required: true
-          schema:
-            type: number
-      responses:
-        '200':
-          description: OK
-          content:
-            json:
-              schema:
-                $ref: '#/components/schemas/CustomerResponse'
-        '401':
-          description: Authentication error
-        '403':
-          description: Authorization error
-        '404':
-          description: Resource not found
-        '422':
-          description: Business error
-          content:
-            json:
-              schema:
-                $ref: '#/components/schemas/UnprocessableEntityException'
-        '500':
-          description: Internal server error
-        '503':
-          description: Unavailable server
-    put:
-      tags:
-        - Customers
-      description: Updates a customer
-      parameters:
-        - name: customerId
-          in: path
-          description: The customer id
-          required: true
-          schema:
-            type: number
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CustomerRequest'
-        description: Customer request
-      responses:
-        '200':
-          description: OK
-          content:
-            json:
-              schema:
-                $ref: '#/components/schemas/CustomerResponse'
-        '401':
-          description: Authentication error
-        '403':
-          description: Authorization error
-        '404':
-          description: Resource not found
-        '422':
-          description: Business error
-          content:
-            json:
-              schema:
-                $ref: '#/components/schemas/UnprocessableEntityException'
-        '500':
-          description: Internal server error
-        '503':
-          description: Unavailable server
-components:
-  schemas:
-    CustomerRequest:
-      type: object
-      properties:
-        name:
-          type: string
-          example: Customer Name
-        leiCompany:
-          type: string
-          example: Sensedia
-        document:
-          type: string
-          example: 99999999
-        active:
-          type: boolean
-          example: true
-        nick:
-          type: string
-          example: sensedia
-        email:
-          type: string
-          example: sensedia@sensedia.com
-    CustomerResponse:
-      type: object
-      properties:
-        id:
-          type: number
-          example: 751265234412765200
-        name:
-          type: string
-          example: Customer Name
-        leiCompany:
-          type: string
-          example: Sensedia
-        document:
-          type: string
-          example: 99999999
-        active:
-          type: boolean
-          example: true
-        nick:
-          type: string
-          example: sensedia
-        email:
-          type: string
-          example: sensedia@sensedia.com
-    BadRequestException:
-      properties:
-        code:
-          type: string
-          example: '400.001'
-          description: Error code
-        message:
-          type: string
-          example: The field {FIELD} is required.
-          description: Error message
-    UnprocessableEntityException:
-      type: object
-      properties:
-        code:
-          type: string
-          description: Error code
-        message:
-          type: string
-          description: Error message
-        detail:
-          type: string
-          description: Error detail
+          type: "string"
+    /customers: 
+      get: 
+        summary: "Displays all customers"
+        description: "Displays all customers"
+        parameters: []
+        responses: 
+          200: 
+            description: "OK"
+      post: 
+        summary: "Creates a new customer"
+        description: "Creates a new customer"
+        parameters: []
+        responses: 
+          200: 
+            description: "OK"
